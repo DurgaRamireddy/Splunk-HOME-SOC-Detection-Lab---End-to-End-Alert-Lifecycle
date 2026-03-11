@@ -197,6 +197,26 @@ index=main (EventID=4625 OR EventID=4624 OR EventID=4104 OR EventID=4688)
 | MITRE TTPs covered | 5 |
 
 ---
+## Files in this Repo
+
+```
+splunk-soc-lab/
+├── README.md
+├── Home SOC Lab Report - Splunk SOC Detection.docx
+├── scripts/
+│   ├── splunk-forward.ps1        # Windows → Splunk log forwarding
+│   └── audit-policy-setup.ps1   # Windows audit policy config
+├── splunk/
+│   └── detection-queries.spl    # All SPL detection searches
+└── screenshots/
+    ├── splunk-dashboard.png
+    ├── 4625-brute-force.png
+    ├── 4624-valid-accounts.png
+    ├── 4104-powershell.png
+    └── attack-timeline.png
+```
+---
+
 ## Skills Demonstrated
 
 - Splunk Enterprise deployment and configuration on Linux
