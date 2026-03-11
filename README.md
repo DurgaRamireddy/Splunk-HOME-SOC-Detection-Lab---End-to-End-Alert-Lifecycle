@@ -235,3 +235,7 @@ splunk-soc-lab/
 - [MITRE ATT&CK Framework](https://attack.mitre.org)
 - [Splunk Documentation](https://docs.splunk.com)
 - [Windows Security Event IDs](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/)
+
+---
+
+By: Durga Sai Sri Ramireddy
