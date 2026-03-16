@@ -1,8 +1,11 @@
-# Splunk-HOME-SOC-Detection-Lab---End-to-End-Alert-Lifecycle
+# Splunk HOME SOC Detection Lab - End-to-End Alert Lifecycle
 
 **Tools:** Splunk 9.3.2 · Windows 10 · Kali Linux · Ubuntu 22.04 · Hydra · PowerShell  
 **MITRE ATT&CK:** T1110 · T1078 · T1059.001 · T1547.001 · T1059  
 **Type:** Home Lab · Blue Team · Threat Detection · Incident Response
+
+> This lab was independently designed and built as a personal home lab project - not part of coursework. All infrastructure, attack simulation, detection logic, and documentation were self-directed.
+
 > ⚠️ **Disclaimer:** This project was conducted entirely in an isolated VMware lab environment for educational purposes only. No real systems, networks, or individuals were targeted. All IP addresses are private VMware Host-Only addresses that exist solely within the local lab.
 
 ---
@@ -43,6 +46,7 @@ This project simulates a real SOC Tier 1 analyst workflow end-to-end:
 | Kali Linux | Kali 2024 | 192.168.161.153 | Attacker |
 
 ---
+
 ## Attack Chain & Detections
 
 | Phase | MITRE TTP | Technique | EventID | Result |
@@ -54,6 +58,7 @@ This project simulates a real SOC Tier 1 analyst workflow end-to-end:
 | 5 | T1059 | Process creation | 4688 | 52 process events logged |
 
 ---
+
 ## Setup
 
 ### Step 1 - Splunk on Ubuntu
@@ -65,8 +70,8 @@ sudo /opt/splunk/bin/splunk start --accept-license
 sudo /opt/splunk/bin/splunk enable boot-start
 
 # Enable HEC
-# Settings → Data Inputs → HTTP Event Collector → Global Settings → Enable → Port 8088
-# New Token → name: winlogbeat → index: main → copy token
+# Settings -> Data Inputs -> HTTP Event Collector -> Global Settings -> Enable -> Port 8088
+# New Token -> name: winlogbeat -> index: main -> copy token
 ```
 
 ### Step 2 - Windows Audit Policy
@@ -82,6 +87,7 @@ $path = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
 New-Item -Path $path -Force
 Set-ItemProperty -Path $path -Name "EnableScriptBlockLogging" -Value 1
 ```
+
 ### Step 3 - Windows Log Forwarding via HEC
 
 ```powershell
@@ -107,9 +113,10 @@ Get-WinEvent -LogName Security -MaxEvents 50 | ForEach-Object {
 ```
 
 ---
+
 ## Attack Simulation
 
-### T1110 - Brute Force (Kali → Windows)
+### T1110 - Brute Force (Kali -> Windows)
 
 ```bash
 # Extract wordlist
@@ -141,6 +148,7 @@ Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"
 ```
 
 ---
+
 ## Splunk Detection Queries (SPL)
 
 ### Brute Force Detection - T1110
@@ -182,6 +190,20 @@ index=main (EventID=4625 OR EventID=4624 OR EventID=4104 OR EventID=4688)
 | PowerShell Executions | EventID=4104 table | Table |
 | Attack Timeline | timechart by EventID | Line Chart |
 
+![Splunk SOC Dashboard](screenshots/splunk-dashboard.png)
+
+---
+
+## Detection Screenshots
+
+![Brute Force -- EventID 4625](screenshots/4625-brute-force.png)
+
+![Valid Account Logons -- EventID 4624](screenshots/4624-valid-accounts.png)
+
+![PowerShell Abuse -- EventID 4104](screenshots/4104-powershell.png)
+
+![Full Attack Timeline](screenshots/attack-timeline.png)
+
 ---
 
 ## Key Results
@@ -197,6 +219,7 @@ index=main (EventID=4625 OR EventID=4624 OR EventID=4104 OR EventID=4688)
 | MITRE TTPs covered | 5 |
 
 ---
+
 ## Files in this Repo
 
 ```
@@ -204,7 +227,7 @@ splunk-soc-lab/
 ├── README.md
 ├── Home SOC Lab Report - Splunk SOC Detection.docx
 ├── scripts/
-│   ├── splunk-forward.ps1        # Windows → Splunk log forwarding
+│   ├── splunk-forward.ps1        # Windows -> Splunk log forwarding
 │   └── audit-policy-setup.ps1   # Windows audit policy config
 ├── splunk/
 │   └── detection-queries.spl    # All SPL detection searches
@@ -215,6 +238,7 @@ splunk-soc-lab/
     ├── 4104-powershell.png
     └── attack-timeline.png
 ```
+
 ---
 
 ## Skills Demonstrated
@@ -238,4 +262,6 @@ splunk-soc-lab/
 
 ---
 
-By: Durga Sai Sri Ramireddy
+**Author:** Durga Sai Sri Ramireddy | MS Cybersecurity, University of Houston  
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0072b1?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/durga-ramireddy)
+[![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/DurgaRamireddy)
